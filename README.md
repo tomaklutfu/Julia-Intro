@@ -390,3 +390,130 @@ julia> t = function (x, y)
  2.0
 
 ```
+
+## Variables and Their Scope
+
+A variable can be attached to a type or may be free. In `Functions` chapter,
+it seen that names attached to functions cannot be assigned to another value.
+
+A top scope is a global scope in a module. In REPL, everything is get to defined
+in `Main` module.
+
+```julia
+julia> a = 2 # a globally bound to 2 in module Main
+2
+
+julia> Main.a
+2
+
+julia> typeof(a)
+Int64
+
+julia> a = 2.0 #It can change type
+2.0
+
+julia> typeof(a)
+Float64
+```
+
+If a non- type changing variable is needed, `const` qualifier should precede the
+assignment.
+
+```julia
+julia> const b = 0x1
+0x01
+
+julia> typeof(b)
+UInt8
+
+julia> b = 1 # cannot assign other than UInt8 values
+ERROR: invalid redefinition of constant b
+Stacktrace:
+ [1] top-level scope at none:0
+
+```
+
+Globally defined variables are available for reading in every point of the
+module they are defined. However, to disambiguate the usage of global variables
+from local variables in an inner block of the module, `global` qualifier has to
+be used.
+
+```julia
+julia> x = 1
+1
+
+julia> let
+           println("x reads as $x")
+       end
+x reads as 1
+
+julia> let
+           x += 1
+           println("x reads as $x")
+       end
+ERROR: UndefVarError: x not defined
+Stacktrace:
+ [1] top-level scope at none:2
+
+julia> let
+           global x += 1
+           println("x reads as $x")
+       end
+x reads as 2
+
+julia> let
+           x = 3; x += 1; # Works because x is now local to this scope
+           println("x reads as $x")
+       end
+x reads as 4
+
+julia> x
+2
+
+```
+
+This rule is also enforced in all top scope blocks including conditional blocks
+of if-clause, for-loops, etc.
+
+```julia
+julia> x = 2
+2
+julia> for i = 1:10
+         x += i
+       end
+ERROR: UndefVarError: x not defined
+Stacktrace:
+ [1] top-level scope at ./none:2
+
+julia> for i = 1:10
+         global x += i
+       end
+
+julia> x
+57
+
+```
+
+## Broadcasting and Mapping
+
+Operators and functions can be applied to arrays element-wise. For example,
+for scalar `+` operator, `.+` is the element-wise counterpart and for scalar
+`sin` function, `sin.` is.
+
+```julia
+julia> 1+1
+2
+
+julia> (1:10) .+ 2
+3:12
+
+julia> (1:10) .+ (1:10)
+2:2:20
+
+julia> (1:3) .+ [1, 5]'
+3×2 Array{Int64,2}:
+ 2  6
+ 3  7
+ 4  8
+ 
+ ```
