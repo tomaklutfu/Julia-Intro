@@ -1,5 +1,11 @@
 # A Quick Intro to Julia - METU ATLAS GROUP
 Date: 2nd  May 2019
+Motivational video from JuliaCon 2018 attendees
+
+<figure class="video_container">
+  <iframe src="https://www.youtube.com/watch?v=baR02tlea5Y" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
+
 ## Comments
 
 ```julia
