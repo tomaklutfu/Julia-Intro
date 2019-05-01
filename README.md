@@ -1,6 +1,7 @@
 # A Quick Intro to Julia - METU ATLAS GROUP
-Date: 2nd  May 2019
-Motivational video from JuliaCon 2018 attendees
+
+Date: 2nd  May 2019  
+Motivational video from JuliaCon 2018 attendees  
 
 
 <iframe width="1280" height="720" src="https://www.youtube.com/embed/baR02tlea5Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
@@ -50,6 +51,7 @@ julia> """
 "Multiline Strings\nCan be useful\nẋ = Ax + Bu\ny = Cx + Du\n"
 
 ```
+
 ## Numbers
 
 Julia has some abstract and some concrete number types, a portion of the latter
@@ -121,6 +123,7 @@ julia> [1 2 3
 2×3 Array{Int64,2}:
  1  2  3
  4  5  6
+
 ```
 
 We can also initialize arrays with their constructors without setting element
@@ -146,7 +149,6 @@ julia> Array{UInt8}(undef, 2, 2, 2) # A three-dimensional array with garbage ele
 [:, :, 2] =
  0x28  0x00
  0x7f  0x00
-
 
 ```
 
@@ -422,6 +424,7 @@ julia> a = 2.0 #It can change type
 
 julia> typeof(a)
 Float64
+
 ```
 
 If a non- type changing variable is needed, `const` qualifier should precede the
@@ -506,7 +509,8 @@ julia> x
 
 Operators and functions can be applied on arrays or array-like objects
 element-wise. For example, for scalar `+` operator, `.+` is the element-wise
-counterpart and for scalar `sin` function, `sin.` is.
+counterpart and for scalar `sin` function, `sin.` is.  
+
 
 ```julia
 julia> 1+1
@@ -545,7 +549,8 @@ julia> sin.(a)
  0.1950903220161286    
  1.2246467991473532e-16
 
- ```
+```
+
 ## Modules and Packages
 
 There are some standard libraries bundled with julia. `LinearAlgebra`,
@@ -601,10 +606,10 @@ julia> using DifferentialEquations, PyPlot
 ## Ordinary Differential Equations
 
 Differential equations show rate of change of states. For example, projectile
-motion can be modeled as
-ẋ = Vₓ
-ẏ = v
-v̇ = -g
+motion can be modeled as  
+ẋ = Vₓ  
+ẏ = v  
+v̇ = -g  
 
 ```julia
 julia> """A description of the function \n
@@ -615,6 +620,7 @@ julia> """A description of the function \n
        projectile_motion(u, p, t) = [p[1], u[3], p[2]]
 projectile_motion
 ```
+
 To create a problem `ODEProblem` function is used.
 
 ```julia
@@ -659,12 +665,13 @@ u: 5-element Array{Array{Float64,1},1}:
  [0.55039, 1.26608, -0.399327]   
  [2.0, -9.62, -14.62]
 
- ```
+```
+
  The solver uses adaptive steps and saves the results at time instances.
  Let's change saving times now.
 
- ```julia
- julia> sol1 = solve(prob, Tsit5(), abstol=1e-8, reltol=1e-8, saveat=0.1)
+```julia
+julia> sol1 = solve(prob, Tsit5(), abstol=1e-8, reltol=1e-8, saveat=0.1)
 retcode: Success
 Interpolation: 1st order linear
 t: 21-element Array{Float64,1}:
@@ -710,6 +717,7 @@ PyObject <matplotlib.legend.Legend object at 0x7f7d1634ce80>
 julia> grid(true)
 
 ```
+
 ![Projectile Motion](./ProjectileMotion.svg)
 
 Let's see difference between them.

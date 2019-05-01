@@ -1,5 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+  </style>
+</head>
+<body>
 <h1 id="a-quick-intro-to-julia---metu-atlas-group">A Quick Intro to Julia - METU ATLAS GROUP</h1>
-<p>Date: 2nd May 2019 Motivational video from JuliaCon 2018 attendees</p>
+<p>Date: 2nd May 2019<br />
+Motivational video from JuliaCon 2018 attendees</p>
 <iframe width="1280" height="720" src="https://www.youtube.com/embed/baR02tlea5Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 <h2 id="comments">Comments</h2>
@@ -98,8 +141,7 @@ julia&gt; <span class="dt">Array</span>{UInt8}(undef, <span class="fl">2</span>,
 
 [:, :, <span class="fl">2</span>] =
  <span class="bn">0x28</span>  <span class="bn">0x00</span>
- <span class="bn">0x7f</span>  <span class="bn">0x00</span>
-</code></pre></div>
+ <span class="bn">0x7f</span>  <span class="bn">0x00</span></code></pre></div>
 <p>Functions such as <code>ones</code>, <code>zeros</code>, <code>rand</code> are useful to constructs Arrays with desired element values.</p>
 <div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; rand(<span class="dt">Int</span>, <span class="fl">3</span>, <span class="fl">2</span>) <span class="co"># A two-dimensional array with random Int64 elements</span>
 <span class="fl">3</span>×<span class="fl">2</span> <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">2</span>}:
@@ -372,25 +414,42 @@ julia&gt; x
 <span class="fl">57</span></code></pre></div>
 <h2 id="broadcasting-and-mapping">Broadcasting and Mapping</h2>
 <p>Operators and functions can be applied on arrays or array-like objects element-wise. For example, for scalar <code>+</code> operator, <code>.+</code> is the element-wise counterpart and for scalar <code>sin</code> function, <code>sin.</code> is.</p>
-<p>```julia julia&gt; 1+1 2</p>
-<p>julia&gt; (1:10) .+ 2 3:12</p>
-<p>julia&gt; (1:10) .+ (1:10) 2:2:20</p>
-<p>julia&gt; (1:3) .+ [1, 5]' 3×2 Array{Int64,2}: 2 6 3 7 4 8</p>
-<p>julia&gt; sin(π/2) 1.0</p>
-<p>julia&gt; a = range(0, π, step=π/16) 0.0:0.19634954084936207:3.141592653589793</p>
-<p>julia&gt; sin.(a) 17-element Array{Float64,1}: 0.0<br />
-0.19509032201612825<br />
-0.3826834323650898<br />
-0.5555702330196022<br />
-0.7071067811865475<br />
-0.8314696123025452<br />
-⋮<br />
-0.7071067811865476<br />
-0.5555702330196022<br />
-0.3826834323650899<br />
-0.1950903220161286<br />
-1.2246467991473532e-16</p>
-<p>``` ## Modules and Packages</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="fl">1</span>+<span class="fl">1</span>
+<span class="fl">2</span>
+
+julia&gt; (<span class="fl">1</span>:<span class="fl">10</span>) .+ <span class="fl">2</span>
+<span class="fl">3</span>:<span class="fl">12</span>
+
+julia&gt; (<span class="fl">1</span>:<span class="fl">10</span>) .+ (<span class="fl">1</span>:<span class="fl">10</span>)
+<span class="fl">2</span>:<span class="fl">2</span>:<span class="fl">20</span>
+
+julia&gt; (<span class="fl">1</span>:<span class="fl">3</span>) .+ [<span class="fl">1</span>, <span class="fl">5</span>]&#39;
+<span class="fl">3</span>×<span class="fl">2</span> <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">2</span>}:
+ <span class="fl">2</span>  <span class="fl">6</span>
+ <span class="fl">3</span>  <span class="fl">7</span>
+ <span class="fl">4</span>  <span class="fl">8</span>
+
+ julia&gt; sin(π/<span class="fl">2</span>)
+<span class="fl">1.0</span>
+
+julia&gt; a = range(<span class="fl">0</span>, π, step=π/<span class="fl">16</span>)
+<span class="fl">0.0</span>:<span class="fl">0.19634954084936207</span>:<span class="fl">3.141592653589793</span>
+
+julia&gt; sin.(a)
+<span class="fl">17</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
+ <span class="fl">0.0</span>                   
+ <span class="fl">0.19509032201612825</span>   
+ <span class="fl">0.3826834323650898</span>    
+ <span class="fl">0.5555702330196022</span>    
+ <span class="fl">0.7071067811865475</span>    
+ <span class="fl">0.8314696123025452</span>    
+ ⋮                     
+ <span class="fl">0.7071067811865476</span>    
+ <span class="fl">0.5555702330196022</span>    
+ <span class="fl">0.3826834323650899</span>    
+ <span class="fl">0.1950903220161286</span>    
+ <span class="fl">1.2246467991473532e-16</span></code></pre></div>
+<h2 id="modules-and-packages">Modules and Packages</h2>
 <p>There are some standard libraries bundled with julia. <code>LinearAlgebra</code>, <code>SparseArrrays</code>, and <code>Statistics</code> are examples of standard libraries. To put them in use, they should be imported by <code>import</code> or <code>using</code> syntax.</p>
 <div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; dot(ones(<span class="fl">5</span>), ones(<span class="fl">5</span>)) <span class="co"># dot product is not available now</span>
 ERROR: UndefVarError: dot not defined
@@ -428,7 +487,10 @@ julia&gt; using DifferentialEquations, PyPlot
 [ Info:  <span class="co"># Some Pre-compilation Statements</span>
 ]</code></pre></div>
 <h2 id="ordinary-differential-equations">Ordinary Differential Equations</h2>
-<p>Differential equations show rate of change of states. For example, projectile motion can be modeled as ẋ = Vₓ ẏ = v v̇ = -g</p>
+<p>Differential equations show rate of change of states. For example, projectile motion can be modeled as<br />
+ẋ = Vₓ<br />
+ẏ = v<br />
+v̇ = -g</p>
 <div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="st">&quot;&quot;&quot;A description of the function </span>\n
        ẋ = Vₓ \n  
        ẏ = v \n
@@ -470,14 +532,9 @@ u: <span class="fl">5</span>-element <span class="dt">Array</span>{<span class="
  [<span class="fl">0.00706933</span>, <span class="fl">0.0351015</span>, <span class="fl">4.93065</span>]
  [<span class="fl">0.0749085</span>, <span class="fl">0.347019</span>, <span class="fl">4.26515</span>]  
  [<span class="fl">0.55039</span>, <span class="fl">1.26608</span>, -<span class="fl">0.399327</span>]   
- [<span class="fl">2.0</span>, -<span class="fl">9.62</span>, -<span class="fl">14.62</span>]
-
- ```
- The solver uses adaptive steps and saves the results at time instances.
- Let&#39;s change saving times now.
-
- ```julia
- julia&gt; sol1 = solve(prob, Tsit5(), abstol=<span class="fl">1e-8</span>, reltol=<span class="fl">1e-8</span>, saveat=<span class="fl">0.1</span>)
+ [<span class="fl">2.0</span>, -<span class="fl">9.62</span>, -<span class="fl">14.62</span>]</code></pre></div>
+<p>The solver uses adaptive steps and saves the results at time instances. Let's change saving times now.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; sol1 = solve(prob, Tsit5(), abstol=<span class="fl">1e-8</span>, reltol=<span class="fl">1e-8</span>, saveat=<span class="fl">0.1</span>)
 retcode: Success
 Interpolation: <span class="fl">1</span>st order linear
 t: <span class="fl">21</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
@@ -534,3 +591,5 @@ julia&gt; grid(true)</code></pre></div>
 <p class="caption">Solution Difference</p>
 </div>
 <p>Lutfullah Tomak, 2019</p>
+</body>
+</html>
