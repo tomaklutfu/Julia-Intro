@@ -374,16 +374,16 @@ ERROR: invalid redefinition of constant f
 Stacktrace:
  [1] top-level scope at none:0
 
- julia> t = function (x, y)
-          s = x
-          sold = zero(x)
-          while sold !== s
-            x /= y
-            sold = s
-            s += x
-          end
-          return s
-        end
+julia> t = function (x, y)
+         s = x
+         sold = zero(x)
+         while sold !== s
+           x /= y
+           sold = s
+           s += x
+         end
+         return s
+       end
  #5 (generic function with 1 method)
 
  julia> t(1, 2)
