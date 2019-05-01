@@ -1,0 +1,536 @@
+<h1 id="a-quick-intro-to-julia---metu-atlas-group">A Quick Intro to Julia - METU ATLAS GROUP</h1>
+<p>Date: 2nd May 2019 Motivational video from JuliaCon 2018 attendees</p>
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/baR02tlea5Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<h2 id="comments">Comments</h2>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="co"># Comment</span>
+
+julia&gt; <span class="co">#=</span>
+             COMMENT SECTION
+          This is a multi-line comment
+       =<span class="co">#</span></code></pre></div>
+<h2 id="characters-and-strings">Characters and Strings</h2>
+<p>Characters use <code>' '</code> single quotes and can be any Unicode Character. Special characters are usually available with <code>\{latex-like-name}</code>+TAB. For example, α can be written in julia REPL (Read-Evaluate-Print-Loop) as typing and pressing TAB key.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="ch">&#39;C&#39;</span>
+<span class="ch">&#39;C&#39;</span>: ASCII/Unicode U+<span class="fl">0043</span> (category Lu: Letter, uppercase)
+
+julia&gt; <span class="ch">&#39;😃&#39;</span>
+<span class="ch">&#39;😃&#39;</span>: Unicode U+<span class="fl">01</span>f603 (category So: <span class="dt">Symbol</span>, other)</code></pre></div>
+<p>There are two ways to get a string literal: double quotes, triple double quotes.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="st">&quot;String &quot;</span>
+<span class="st">&quot;String &quot;</span>
+
+julia&gt; <span class="st">&quot;&quot;&quot;</span>
+       Multiline Strings
+       Can be useful
+       ẋ = Ax + Bu
+       y = Cx + Du
+       <span class="st">&quot;&quot;&quot;</span>
+<span class="st">&quot;Multiline Strings</span>\n<span class="st">Can be useful</span>\n<span class="st">ẋ = Ax + Bu</span>\n<span class="st">y = Cx + Du</span>\n<span class="st">&quot;</span></code></pre></div>
+<h2 id="numbers">Numbers</h2>
+<p>Julia has some abstract and some concrete number types, a portion of the latter can be constructed by literals. The concrete numbers are mirrored as common CPU numbers such as 8,16,32,64 bit integers and 32 and 64 bit float numbers when available to the machine. There are also big and 128-bit integer and float numbers as well as 16 bit floats though they are not mapped directly machine numbers. Operations on this values are bound to what corresponding CPU instruction does; therefore, integers can overflow and underflow, floats may not be exact.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="bn">0x1</span> <span class="co">#8-bit unsigned integer</span>
+<span class="bn">0x01</span>
+
+julia&gt; <span class="fl">1</span> <span class="co">#64-bit or 32-bit signed integer depending on system integer size</span>
+<span class="fl">1</span>
+
+julia&gt; <span class="fl">1.0</span> <span class="co">#64-bit IEEE floating number</span>
+<span class="fl">1.0</span>
+
+julia&gt; big<span class="st">&quot;1&quot;</span> <span class="co"># A big integer</span>
+<span class="fl">1</span>
+
+julia&gt; big<span class="st">&quot;1.0&quot;</span> <span class="co"># A big float</span>
+<span class="fl">1.0</span>
+
+julia&gt; <span class="fl">1.0</span>f0 <span class="co"># 32-bit IEEE floating number</span>
+<span class="fl">1.0</span>f<span class="fl">0</span></code></pre></div>
+<h2 id="arrays">Arrays</h2>
+<p>Arrays are containers for multiple objects stacked in multiple dimensions. Type signature is <code>Array{T, N}</code> where <code>T</code> refers to a type or collection of types and determining containable objects and <code>N</code> is the dimension. <code>[...]</code> syntax generates Arrays. Within brackets, while comma (<code>,</code>) separates objects without concatenation, semicolon (<code>;</code>) causes concatenation.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; [<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>] <span class="co"># An array with dimension 1 and element type Int64</span>
+<span class="fl">3</span>-element <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>}:
+ <span class="fl">1</span>
+ <span class="fl">2</span>
+ <span class="fl">3</span>
+
+julia&gt; [<span class="fl">1</span>; <span class="fl">2</span>; <span class="fl">3</span>] <span class="co"># An array with dimension 1 and element type Int64</span>
+<span class="fl">3</span>-element <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>}:
+ <span class="fl">1</span>
+ <span class="fl">2</span>
+ <span class="fl">3</span>
+
+julia&gt; [[<span class="fl">1</span>; <span class="fl">2</span>; <span class="fl">3</span>], [<span class="fl">1</span>; <span class="fl">2</span>; <span class="fl">3</span>]] <span class="co"># An array with dimension 1 and element type Array{Int64, 1}</span>
+<span class="fl">2</span>-element <span class="dt">Array</span>{<span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>},<span class="fl">1</span>}:
+ [<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>]
+ [<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>]
+
+julia&gt; [[<span class="fl">1</span>; <span class="fl">2</span>; <span class="fl">3</span>]; [<span class="fl">1</span>; <span class="fl">2</span>; <span class="fl">3</span>]]  <span class="co"># An array with dimension 1 and element type Int64</span>
+<span class="fl">6</span>-element <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>}:
+ <span class="fl">1</span>
+ <span class="fl">2</span>
+ <span class="fl">3</span>
+ <span class="fl">1</span>
+ <span class="fl">2</span>
+ <span class="fl">3</span>
+
+julia&gt; [<span class="fl">1</span> <span class="fl">2</span> <span class="fl">3</span>
+       <span class="fl">4</span> <span class="fl">5</span> <span class="fl">6</span>] <span class="co"># An array with dimension 2 and element type Int64</span>
+<span class="fl">2</span>×<span class="fl">3</span> <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">2</span>}:
+ <span class="fl">1</span>  <span class="fl">2</span>  <span class="fl">3</span>
+ <span class="fl">4</span>  <span class="fl">5</span>  <span class="fl">6</span></code></pre></div>
+<p>We can also initialize arrays with their constructors without setting element values.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="dt">Array</span>{<span class="dt">Float64</span>}(undef, <span class="fl">2</span>) <span class="co"># A one-dimensional array with garbage elements</span>
+<span class="fl">2</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
+ <span class="fl">6.90762826073923e-310</span>
+ <span class="fl">6.90762826040564e-310</span>
+
+julia&gt; <span class="dt">Array</span>{<span class="dt">Float64</span>}(undef, <span class="fl">2</span>, <span class="fl">2</span>) <span class="co"># A two-dimensional array with garbage elements</span>
+<span class="fl">2</span>×<span class="fl">2</span> <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">2</span>}:
+ <span class="fl">6.90763e-310</span>  <span class="fl">6.90763e-310</span>
+ <span class="fl">6.90763e-310</span>  <span class="fl">8.48798e-314</span>
+
+julia&gt; <span class="dt">Array</span>{UInt8}(undef, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>) <span class="co"># A three-dimensional array with garbage elements</span>
+<span class="fl">2</span>×<span class="fl">2</span>×<span class="fl">2</span> <span class="dt">Array</span>{UInt8,<span class="fl">3</span>}:
+[:, :, <span class="fl">1</span>] =
+ <span class="bn">0x70</span>  <span class="bn">0x6e</span>
+ <span class="bn">0x0c</span>  <span class="bn">0x81</span>
+
+[:, :, <span class="fl">2</span>] =
+ <span class="bn">0x28</span>  <span class="bn">0x00</span>
+ <span class="bn">0x7f</span>  <span class="bn">0x00</span>
+</code></pre></div>
+<p>Functions such as <code>ones</code>, <code>zeros</code>, <code>rand</code> are useful to constructs Arrays with desired element values.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; rand(<span class="dt">Int</span>, <span class="fl">3</span>, <span class="fl">2</span>) <span class="co"># A two-dimensional array with random Int64 elements</span>
+<span class="fl">3</span>×<span class="fl">2</span> <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">2</span>}:
+ -<span class="fl">4476424184950324271</span>  <span class="fl">5946311011698957211</span>
+  <span class="fl">8545306388960892269</span>  <span class="fl">1129361699571286681</span>
+ -<span class="fl">9005869575844081383</span>  -<span class="fl">527881233534858520</span>
+
+julia&gt; rand(<span class="dt">Int8</span>, <span class="fl">3</span>, <span class="fl">2</span>) <span class="co"># A two-dimensional array with random Int8 elements</span>
+<span class="fl">3</span>×<span class="fl">2</span> <span class="dt">Array</span>{<span class="dt">Int8</span>,<span class="fl">2</span>}:
+  <span class="fl">86</span>   <span class="fl">8</span>
+ <span class="fl">120</span>  <span class="fl">38</span>
+  <span class="fl">97</span>  -<span class="fl">8</span>
+
+julia&gt; ones(<span class="fl">3</span>) <span class="co"># A one-dimensional array initialized with Float64 ones</span>
+<span class="fl">3</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
+ <span class="fl">1.0</span>
+ <span class="fl">1.0</span>
+ <span class="fl">1.0</span>
+
+julia&gt; ones(<span class="fl">2</span>, <span class="fl">5</span>) <span class="co"># A two-dimensional array initialized with Float64 ones</span>
+<span class="fl">2</span>×<span class="fl">5</span> <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">2</span>}:
+ <span class="fl">1.0</span>  <span class="fl">1.0</span>  <span class="fl">1.0</span>  <span class="fl">1.0</span>  <span class="fl">1.0</span>
+ <span class="fl">1.0</span>  <span class="fl">1.0</span>  <span class="fl">1.0</span>  <span class="fl">1.0</span>  <span class="fl">1.0</span>
+
+julia&gt; zeros(<span class="dt">Float32</span>, <span class="fl">2</span>, <span class="fl">5</span>) <span class="co"># A two-dimensional array initialized with Float32 zeros</span>
+<span class="fl">2</span>×<span class="fl">5</span> <span class="dt">Array</span>{<span class="dt">Float32</span>,<span class="fl">2</span>}:
+ <span class="fl">0.0</span>  <span class="fl">0.0</span>  <span class="fl">0.0</span>  <span class="fl">0.0</span>  <span class="fl">0.0</span>
+ <span class="fl">0.0</span>  <span class="fl">0.0</span>  <span class="fl">0.0</span>  <span class="fl">0.0</span>  <span class="fl">0.0</span></code></pre></div>
+<h2 id="control-flow-structures">Control Flow Structures</h2>
+<p>There are 4 types of control flow syntax: if-clauses, for-loops, while-loops, try-catch-finally.</p>
+<h3 id="if-clause">If-Clause</h3>
+<p>This syntax conditionally executes a chunk of code. If-clauses accepts only the boolean values <code>true</code> and <code>false</code> as conditions.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="kw">if</span> sin(π/<span class="fl">2</span>) ≈ <span class="fl">1</span> <span class="co"># true</span>
+         println(<span class="st">&quot;sine of π/2 is approximately one&quot;</span>)
+       <span class="kw">end</span>
+sine of π/<span class="fl">2</span> is approximately one
+
+julia&gt; <span class="kw">if</span> <span class="fl">4</span> &lt; <span class="fl">5</span> <span class="co"># true</span>
+           <span class="fl">3</span> % <span class="fl">2</span> == <span class="fl">1</span> ? println(<span class="st">&quot;Odd&quot;</span>) : println(<span class="st">&quot;Even&quot;</span>)
+       <span class="kw">elseif</span> <span class="fl">7</span> % <span class="fl">3</span> == <span class="fl">0</span> <span class="co"># else if 4 &lt; 5 were not true</span>
+           println(<span class="st">&quot;Else if&quot;</span>)
+       <span class="kw">else</span> <span class="co"># else if  both conditions were not true</span>
+           println(<span class="st">&quot;Else&quot;</span>)
+       <span class="kw">end</span>
+Odd</code></pre></div>
+<p>There is also ternary operator for conditional execution.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; sin(π/<span class="fl">2</span>) ≈ <span class="fl">1</span> ? println(<span class="st">&quot;sin of π/2 is one&quot;</span>) : println(<span class="st">&quot;Dummy!&quot;</span>)
+sin of π/<span class="fl">2</span> is one</code></pre></div>
+<h3 id="for-loops">For-loops</h3>
+<p>Until an iterable object finishes, the loop body is executed with given iterant in for-loop.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="kw">for</span> i = <span class="fl">1</span>:<span class="fl">10</span> <span class="co"># `i in 1:10` is the same</span>
+         <span class="kw">if</span> i &lt; <span class="fl">5</span>
+           i % <span class="fl">2</span> == <span class="fl">1</span> ? println(<span class="st">&quot;Odd&quot;</span>) : println(<span class="st">&quot;Even&quot;</span>)
+         <span class="kw">elseif</span> i % <span class="fl">3</span> == <span class="fl">0</span>
+           println(<span class="st">&quot;Jump to the beginning of the loop after iterating i = $i&quot;</span>)
+           <span class="kw">continue</span> <span class="co"># Jump to the next iteration of i</span>
+         <span class="kw">elseif</span> i % <span class="fl">4</span> == <span class="fl">0</span>
+           println(<span class="st">&quot;Jump out of the loop i = $i&quot;</span>)
+           <span class="kw">break</span> <span class="co"># End all iterations</span>
+         <span class="kw">end</span>
+         println(<span class="st">&quot;End of the loop i = $i&quot;</span>)
+       <span class="kw">end</span>
+Odd
+End of the loop i = <span class="fl">1</span>
+Even
+End of the loop i = <span class="fl">2</span>
+Odd
+End of the loop i = <span class="fl">3</span>
+Even
+End of the loop i = <span class="fl">4</span>
+End of the loop i = <span class="fl">5</span>
+Jump to the beginning of the loop after iterating i = <span class="fl">6</span>
+End of the loop i = <span class="fl">7</span>
+Jump out of the loop i = <span class="fl">8</span></code></pre></div>
+<h3 id="while-loops">While-Loops</h3>
+<p>The loop body is executed until a condition is not met.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; i = <span class="fl">0</span> <span class="co"># initialize a variable</span>
+<span class="fl">0</span>
+
+julia&gt; <span class="kw">while</span> i &lt;= <span class="fl">10</span>   <span class="co"># check the condition</span>
+         <span class="kw">global</span> i += <span class="fl">1</span> <span class="co"># increment i</span>
+         <span class="kw">if</span> i &lt; <span class="fl">5</span>
+           i % <span class="fl">2</span> == <span class="fl">1</span> ? println(<span class="st">&quot;Odd&quot;</span>) : println(<span class="st">&quot;Even&quot;</span>)
+         <span class="kw">elseif</span> i % <span class="fl">3</span> == <span class="fl">0</span>
+           println(<span class="st">&quot;Jump to the begining of the loop after iterating i = $i&quot;</span>)
+           <span class="kw">continue</span>
+         <span class="kw">elseif</span> i % <span class="fl">4</span> == <span class="fl">0</span>
+           println(<span class="st">&quot;Jump out of the loop i = $i&quot;</span>)
+           <span class="kw">break</span>
+         <span class="kw">end</span>
+         println(<span class="st">&quot;End of the loop i = $i&quot;</span>)
+       <span class="kw">end</span>
+Odd
+End of the loop i = <span class="fl">1</span>
+Even
+End of the loop i = <span class="fl">2</span>
+Odd
+End of the loop i = <span class="fl">3</span>
+Even
+End of the loop i = <span class="fl">4</span>
+End of the loop i = <span class="fl">5</span>
+Jump to the begining of the loop after iterating i = <span class="fl">6</span>
+End of the loop i = <span class="fl">7</span>
+Jump out of the loop i = <span class="fl">8</span></code></pre></div>
+<h3 id="try-catch-finally">Try-catch-finally</h3>
+<p><code>try</code> starts a block of code that is run until an exception occurs. If an error does occur <code>catch</code> block gets the error and is executed till the end (Still errors may occur and the execution then stops). Optional block <code>finally</code>, if exists, is executed whether an error occurs.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="kw">try</span>
+         z == <span class="fl">1</span>
+       <span class="kw">catch</span> e
+         throw(e)
+       finally
+         <span class="kw">global</span> z = <span class="fl">2</span>
+       <span class="kw">end</span>
+ERROR: UndefVarError: z not defined
+Stacktrace:
+ [<span class="fl">1</span>] top-level scope at REPL[<span class="fl">97</span>]:<span class="fl">4</span>
+
+ julia&gt; z = <span class="fl">1</span>
+ <span class="fl">1</span>
+
+ julia&gt; <span class="kw">try</span>
+          z == <span class="fl">1</span>
+        <span class="kw">catch</span> e
+          throw(e)
+        finally
+          <span class="kw">global</span> z = <span class="fl">2</span>
+        <span class="kw">end</span>
+ true
+
+ julia&gt; z
+ <span class="fl">2</span></code></pre></div>
+<h2 id="functions">Functions</h2>
+<p>There are two ways to declare a function: one-liner and multi-line.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">
+julia&gt; f(x, y) = y*x^y <span class="co"># Function declaration for one-liner</span>
+f (generic <span class="kw">function</span> with <span class="fl">1</span> method)
+
+julia&gt; f(<span class="fl">1</span>, <span class="fl">3</span>) <span class="co"># Function call</span>
+<span class="fl">3</span>
+
+julia&gt; <span class="kw">function</span> helper(x, y) <span class="co"># Multi-line function definition</span>
+         s = x
+         sold = zero(x)
+         <span class="kw">while</span> sold !== s
+           x /= y
+           sold = s
+           s += x
+         <span class="kw">end</span>
+         <span class="kw">return</span> s
+       <span class="kw">end</span>
+helper (generic <span class="kw">function</span> with <span class="fl">1</span> method)
+
+julia&gt; helper(<span class="fl">1</span>, <span class="fl">0</span>)
+Inf
+
+julia&gt; helper(<span class="fl">0</span>, <span class="fl">0</span>)
+<span class="fl">0</span>
+
+julia&gt; helper(<span class="fl">1</span>, <span class="fl">0.5</span>)
+Inf
+
+julia&gt; helper(<span class="fl">1</span>, <span class="fl">2</span>)
+<span class="fl">2.0</span></code></pre></div>
+<p>There is also anonymous functions.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; t = (x, y) -&gt; y*x^y <span class="co"># The variable name t can be bound anything else later but f and helper not</span>
+<span class="co">#3 (generic function with 1 method)</span>
+
+julia&gt; t(<span class="fl">1</span>, <span class="fl">3</span>)
+<span class="fl">3</span>
+
+julia&gt; t = <span class="fl">0</span>
+<span class="fl">0</span>
+
+julia&gt; t
+<span class="fl">0</span>
+
+julia&gt; f = <span class="fl">0</span>
+ERROR: invalid redefinition of constant f
+Stacktrace:
+ [<span class="fl">1</span>] top-level scope at none:<span class="fl">0</span>
+
+julia&gt; t = <span class="kw">function</span> (x, y)
+         s = x
+         sold = zero(x)
+         <span class="kw">while</span> sold !== s
+           x /= y
+           sold = s
+           s += x
+         <span class="kw">end</span>
+         <span class="kw">return</span> s
+       <span class="kw">end</span>
+ <span class="co">#5 (generic function with 1 method)</span>
+
+ julia&gt; t(<span class="fl">1</span>, <span class="fl">2</span>)
+ <span class="fl">2.0</span></code></pre></div>
+<h2 id="variables-and-their-scope">Variables and Their Scope</h2>
+<p>A variable can be attached to a type or may be free. In <code>Functions</code> chapter, it seen that names attached to functions cannot be assigned to another value.</p>
+<p>A top scope is a global scope in a module. In REPL, everything is get to defined in <code>Main</code> module.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; a = <span class="fl">2</span> <span class="co"># a globally bound to 2 in module Main</span>
+<span class="fl">2</span>
+
+julia&gt; Main.a
+<span class="fl">2</span>
+
+julia&gt; typeof(a)
+<span class="dt">Int64</span>
+
+julia&gt; a = <span class="fl">2.0</span> <span class="co">#It can change type</span>
+<span class="fl">2.0</span>
+
+julia&gt; typeof(a)
+<span class="dt">Float64</span></code></pre></div>
+<p>If a non- type changing variable is needed, <code>const</code> qualifier should precede the assignment.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="kw">const</span> b = <span class="bn">0x1</span>
+<span class="bn">0x01</span>
+
+julia&gt; typeof(b)
+UInt<span class="fl">8</span>
+
+julia&gt; b = <span class="fl">1</span> <span class="co"># cannot assign other than UInt8 values</span>
+ERROR: invalid redefinition of constant b
+Stacktrace:
+ [<span class="fl">1</span>] top-level scope at none:<span class="fl">0</span></code></pre></div>
+<p>Globally defined variables are available for reading in every point of the module they are defined. However, to disambiguate the usage of global variables from local variables in an inner block of the module, <code>global</code> qualifier has to be used.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; x = <span class="fl">1</span>
+<span class="fl">1</span>
+
+julia&gt; <span class="kw">let</span>
+           println(<span class="st">&quot;x reads as $x&quot;</span>)
+       <span class="kw">end</span>
+x reads as <span class="fl">1</span>
+
+julia&gt; <span class="kw">let</span>
+           x += <span class="fl">1</span>
+           println(<span class="st">&quot;x reads as $x&quot;</span>)
+       <span class="kw">end</span>
+ERROR: UndefVarError: x not defined
+Stacktrace:
+ [<span class="fl">1</span>] top-level scope at none:<span class="fl">2</span>
+
+julia&gt; <span class="kw">let</span>
+           <span class="kw">global</span> x += <span class="fl">1</span>
+           println(<span class="st">&quot;x reads as $x&quot;</span>)
+       <span class="kw">end</span>
+x reads as <span class="fl">2</span>
+
+julia&gt; <span class="kw">let</span>
+           x = <span class="fl">3</span>; x += <span class="fl">1</span>; <span class="co"># Works because x is now local to this scope</span>
+           println(<span class="st">&quot;x reads as $x&quot;</span>)
+       <span class="kw">end</span>
+x reads as <span class="fl">4</span>
+
+julia&gt; x
+<span class="fl">2</span></code></pre></div>
+<p>This rule is also enforced in all top scope blocks including conditional blocks of if-clause, for-loops, etc.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; x = <span class="fl">2</span>
+<span class="fl">2</span>
+julia&gt; <span class="kw">for</span> i = <span class="fl">1</span>:<span class="fl">10</span>
+         x += i
+       <span class="kw">end</span>
+ERROR: UndefVarError: x not defined
+Stacktrace:
+ [<span class="fl">1</span>] top-level scope at ./none:<span class="fl">2</span>
+
+julia&gt; <span class="kw">for</span> i = <span class="fl">1</span>:<span class="fl">10</span>
+         <span class="kw">global</span> x += i
+       <span class="kw">end</span>
+
+julia&gt; x
+<span class="fl">57</span></code></pre></div>
+<h2 id="broadcasting-and-mapping">Broadcasting and Mapping</h2>
+<p>Operators and functions can be applied on arrays or array-like objects element-wise. For example, for scalar <code>+</code> operator, <code>.+</code> is the element-wise counterpart and for scalar <code>sin</code> function, <code>sin.</code> is.</p>
+<p>```julia julia&gt; 1+1 2</p>
+<p>julia&gt; (1:10) .+ 2 3:12</p>
+<p>julia&gt; (1:10) .+ (1:10) 2:2:20</p>
+<p>julia&gt; (1:3) .+ [1, 5]' 3×2 Array{Int64,2}: 2 6 3 7 4 8</p>
+<p>julia&gt; sin(π/2) 1.0</p>
+<p>julia&gt; a = range(0, π, step=π/16) 0.0:0.19634954084936207:3.141592653589793</p>
+<p>julia&gt; sin.(a) 17-element Array{Float64,1}: 0.0<br />
+0.19509032201612825<br />
+0.3826834323650898<br />
+0.5555702330196022<br />
+0.7071067811865475<br />
+0.8314696123025452<br />
+⋮<br />
+0.7071067811865476<br />
+0.5555702330196022<br />
+0.3826834323650899<br />
+0.1950903220161286<br />
+1.2246467991473532e-16</p>
+<p>``` ## Modules and Packages</p>
+<p>There are some standard libraries bundled with julia. <code>LinearAlgebra</code>, <code>SparseArrrays</code>, and <code>Statistics</code> are examples of standard libraries. To put them in use, they should be imported by <code>import</code> or <code>using</code> syntax.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; dot(ones(<span class="fl">5</span>), ones(<span class="fl">5</span>)) <span class="co"># dot product is not available now</span>
+ERROR: UndefVarError: dot not defined
+Stacktrace:
+ [<span class="fl">1</span>] top-level scope at none:<span class="fl">0</span>
+
+julia&gt; <span class="kw">import</span> LinearAlgebra <span class="co"># import LinearAlgebra Module</span>
+
+julia&gt; dot(ones(<span class="fl">5</span>), ones(<span class="fl">5</span>)) <span class="co"># Still dot product is not available</span>
+ERROR: UndefVarError: dot not defined
+Stacktrace:
+ [<span class="fl">1</span>] top-level scope at none:<span class="fl">0</span>
+
+julia&gt; LinearAlgebra.dot(ones(<span class="fl">5</span>), ones(<span class="fl">5</span>)) <span class="co"># But can call with LinearAlgebra namespace</span>
+<span class="fl">5.0</span>
+
+julia&gt; using LinearAlgebra <span class="co"># Now the exported names from LinearAlgebra is available</span>
+
+julia&gt; dot(ones(<span class="fl">5</span>), ones(<span class="fl">5</span>))
+<span class="fl">5.0</span></code></pre></div>
+<p>Other than standard libraries, The Julia Language can pull packages from GitHub repositories. For later usage, <code>DifferentialEquations.jl</code> and <code>PyPlot.jl</code> packages are shown to how to be installed.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt;] <span class="co">#Press right bracket in REPL</span>
+
+(v1<span class="fl">.1</span>) pkg&gt; <span class="co">#Prompts this</span>
+
+(v1<span class="fl">.1</span>) pkg&gt; add DifferentialEquations PyPlot
+ Resolving package versions...
+ <span class="co"># Bunch of install directives</span>
+
+(v1<span class="fl">.1</span>) pkg&gt; <span class="co"># Press Backspace button to turn back to REPL</span>
+
+julia&gt; <span class="co"># Prompts this</span>
+
+julia&gt; using DifferentialEquations, PyPlot
+[ Info:  <span class="co"># Some Pre-compilation Statements</span>
+]</code></pre></div>
+<h2 id="ordinary-differential-equations">Ordinary Differential Equations</h2>
+<p>Differential equations show rate of change of states. For example, projectile motion can be modeled as ẋ = Vₓ ẏ = v v̇ = -g</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; <span class="st">&quot;&quot;&quot;A description of the function </span>\n
+       ẋ = Vₓ \n  
+       ẏ = v \n
+       v̇ = -g \n
+       <span class="st">&quot;&quot;&quot;</span>
+       projectile_motion(u, p, t) = [p[<span class="fl">1</span>], u[<span class="fl">3</span>], p[<span class="fl">2</span>]]
+projectile_motion</code></pre></div>
+<p>To create a problem <code>ODEProblem</code> function is used.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; u0 = [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">5.0</span>]
+<span class="fl">3</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
+ <span class="fl">0.0</span>
+ <span class="fl">0.0</span>
+ <span class="fl">5.0</span>
+
+julia&gt; params = [<span class="fl">1</span>, -<span class="fl">9.81</span>]
+<span class="fl">2</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
+  <span class="fl">1.0</span>
+ -<span class="fl">9.81</span>
+
+julia&gt; tspan = (<span class="fl">0.0</span>, <span class="fl">2.0</span>)
+(<span class="fl">0.0</span>, <span class="fl">2.0</span>)
+
+julia&gt; prob = ODEProblem(projectile_motion, u0, tspan, params)
+ODEProblem with uType <span class="dt">Array</span>{<span class="dt">Int64</span>,<span class="fl">1</span>} and tType <span class="dt">Int64</span>. In-place: false
+timespan: (<span class="fl">0</span>, <span class="fl">2</span>)
+u0: [<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span>]</code></pre></div>
+<p>To solve the problem, <code>solve</code> function is used. The function takes a problem, a method for solving the problem, and other parameters for this method.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; sol = solve(prob, Tsit5(), abstol=<span class="fl">1e-8</span>, reltol=<span class="fl">1e-8</span>)
+retcode: Success
+Interpolation: specialized <span class="fl">4</span>th order <span class="st">&quot;free&quot;</span> interpolation
+t: <span class="fl">5</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
+ <span class="fl">0.0</span>                  
+ <span class="fl">0.0070693311194078125</span>
+ <span class="fl">0.07490849421525578</span>  
+ <span class="fl">0.5503901400837413</span>   
+ <span class="fl">2.0</span>                  
+u: <span class="fl">5</span>-element <span class="dt">Array</span>{<span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>},<span class="fl">1</span>}:
+ [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">5.0</span>]                 
+ [<span class="fl">0.00706933</span>, <span class="fl">0.0351015</span>, <span class="fl">4.93065</span>]
+ [<span class="fl">0.0749085</span>, <span class="fl">0.347019</span>, <span class="fl">4.26515</span>]  
+ [<span class="fl">0.55039</span>, <span class="fl">1.26608</span>, -<span class="fl">0.399327</span>]   
+ [<span class="fl">2.0</span>, -<span class="fl">9.62</span>, -<span class="fl">14.62</span>]
+
+ ```
+ The solver uses adaptive steps and saves the results at time instances.
+ Let&#39;s change saving times now.
+
+ ```julia
+ julia&gt; sol1 = solve(prob, Tsit5(), abstol=<span class="fl">1e-8</span>, reltol=<span class="fl">1e-8</span>, saveat=<span class="fl">0.1</span>)
+retcode: Success
+Interpolation: <span class="fl">1</span>st order linear
+t: <span class="fl">21</span>-element <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>}:
+ <span class="fl">0.0</span>
+ <span class="fl">0.1</span>
+ <span class="fl">0.2</span>
+ <span class="fl">0.3</span>
+ <span class="fl">0.4</span>
+ <span class="fl">0.5</span>
+ ⋮  
+ <span class="fl">1.6</span>
+ <span class="fl">1.7</span>
+ <span class="fl">1.8</span>
+ <span class="fl">1.9</span>
+ <span class="fl">2.0</span>
+u: <span class="fl">21</span>-element <span class="dt">Array</span>{<span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">1</span>},<span class="fl">1</span>}:
+ [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">5.0</span>]         
+ [<span class="fl">0.1</span>, <span class="fl">0.45095</span>, <span class="fl">4.019</span>]   
+ [<span class="fl">0.2</span>, <span class="fl">0.8038</span>, <span class="fl">3.038</span>]    
+ [<span class="fl">0.3</span>, <span class="fl">1.05855</span>, <span class="fl">2.057</span>]   
+ [<span class="fl">0.4</span>, <span class="fl">1.2152</span>, <span class="fl">1.076</span>]    
+ [<span class="fl">0.5</span>, <span class="fl">1.27375</span>, <span class="fl">0.095</span>]   
+ ⋮                       
+ [<span class="fl">1.6</span>, -<span class="fl">4.5568</span>, -<span class="fl">10.696</span>]
+ [<span class="fl">1.7</span>, -<span class="fl">5.67545</span>, -<span class="fl">11.677</span>]
+ [<span class="fl">1.8</span>, -<span class="fl">6.8922</span>, -<span class="fl">12.658</span>]
+ [<span class="fl">1.9</span>, -<span class="fl">8.20705</span>, -<span class="fl">13.639</span>]
+ [<span class="fl">2.0</span>, -<span class="fl">9.62</span>, -<span class="fl">14.62</span>]  </code></pre></div>
+<p>Let's see how they evolves</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; plot(sol[<span class="fl">1</span>, :], sol[<span class="fl">2</span>, :], <span class="st">&quot;r--&quot;</span>, sol1[<span class="fl">1</span>, :], sol1[<span class="fl">2</span>, :], <span class="st">&quot;b--&quot;</span>)
+<span class="fl">2</span>-element <span class="dt">Array</span>{PyCall.PyObject,<span class="fl">1</span>}:
+ PyObject &lt;matplotlib.lines.Line2D object at <span class="bn">0x7f7d163290f0</span>&gt;
+ PyObject &lt;matplotlib.lines.Line2D object at <span class="bn">0x7f7d1629f358</span>&gt;
+
+julia&gt; legend((<span class="st">&quot;Adaptive Steps&quot;</span>, L<span class="st">&quot;Interval $\Delta$t = 0.1 sec&quot;</span>),loc=<span class="fl">1</span>)
+PyObject &lt;matplotlib.legend.Legend object at <span class="bn">0x7f7d1634ce80</span>&gt;
+
+julia&gt; grid(true)</code></pre></div>
+<div class="figure">
+<img src="./ProjectileMotion.svg" alt="Projectile Motion" />
+<p class="caption">Projectile Motion</p>
+</div>
+<p>Let's see difference between them.</p>
+<div class="sourceCode"><pre class="sourceCode julia"><code class="sourceCode julia">julia&gt; plot(sol1.t, norm.(sol.(<span class="fl">0</span>:<span class="fl">0.1</span>:<span class="fl">2</span>) .- sol1.(<span class="fl">0</span>:<span class="fl">0.1</span>:<span class="fl">2</span>)))
+<span class="fl">1</span>-element <span class="dt">Array</span>{PyCall.PyObject,<span class="fl">1</span>}:
+ PyObject &lt;matplotlib.lines.Line2D object at <span class="bn">0x7f7d9f4c2828</span>&gt;
+
+julia&gt; legend((<span class="st">&quot;Solution Difference&quot;</span>,), loc=<span class="fl">1</span>)
+PyObject &lt;matplotlib.legend.Legend object at <span class="bn">0x7f7d9fd62a58</span>&gt;
+
+julia&gt; grid(true)</code></pre></div>
+<div class="figure">
+<img src="./soldiff.svg" alt="Solution Difference" />
+<p class="caption">Solution Difference</p>
+</div>
+<p>Lutfullah Tomak, 2019</p>
