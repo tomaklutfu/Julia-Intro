@@ -736,4 +736,69 @@ julia> grid(true)
 
 ![Solution Difference](./soldiff.svg)
 
+Let's add ball collision
+
+```julia
+julia> condition(u, t, integ) = u[2]
+condition (generic function with 1 method)
+
+julia> function affect!(integ)
+           integ.u[2] =  0
+           integ.u[3] = -0.8integ.u[3]
+           integ.p[1] =  0.8integ.p[1]
+       end
+affect! (generic function with 1 method)
+
+julia> cb = ContinuousCallback(condition, affect!, abstol=1e-14, interp_points=100);
+
+julia> sol2 = solve(prob, Tsit5(), abstol=1e-8, reltol=1e-8, saveat=0.1, callback=cb)
+retcode: Success
+Interpolation: 1st order linear
+t: 25-element Array{Float64,1}:
+ 0.0              
+ 0.1              
+ 0.2              
+ 0.3              
+ 0.4              
+ 0.5              
+ ⋮                
+ 1.8              
+ 1.834862385321088
+ 1.834862385321088
+ 1.9              
+ 2.0              
+u: 25-element Array{Array{Float64,1},1}:
+ [0.0, 0.0, 5.0]              
+ [0.1, 0.45095, 4.019]        
+ [0.2, 0.8038, 3.038]         
+ [0.3, 1.05855, 2.057]        
+ [0.4, 1.2152, 1.076]         
+ [0.5, 1.27375, 0.095]        
+ ⋮                            
+ [1.64387, 0.133488, -3.658]  
+ [1.67176, -1.01251e-14, -4.0]
+ [1.67176, 0.0, 3.2]          
+ [1.71345, 0.187629, 2.561]   
+ [1.77745, 0.394679, 1.58]   
+
+julia> plot(sol2[1, :], sol2[2, :], "c-")
+ 1-element Array{PyCall.PyObject,1}:
+  PyObject <matplotlib.lines.Line2D object at 0x7f9d1689a160>
+
+julia> plot(sol2.t, zeros(size(sol2.t)), "k", linewidth=2.0)
+ 1-element Array{PyCall.PyObject,1}:
+  PyObject <matplotlib.lines.Line2D object at 0x7f9d1a0a9438>
+
+julia> scatter(sol2[1, :], sol2[2, :], color="r")
+ PyObject <matplotlib.collections.PathCollection object at 0x7f9d17f7fe48>
+
+julia> legend(("Projectile under collision", ), loc=1)
+ PyObject <matplotlib.legend.Legend object at 0x7f9d19fee6a0>
+
+julia> grid(true)
+
+```
+
+![Callback Ball Collision](./collision.svg)
+
 Lutfullah Tomak, 2019
