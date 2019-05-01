@@ -594,6 +594,112 @@ julia> using DifferentialEquations, PyPlot
 
 Differential equations show rate of change of states. For example, projectile
 motion can be modeled as
-$\dot{x} = V_x$
-$\dot{y} = V_y$
-$\dot{V}_y = -g$
+ẋ = Vₓ
+ẏ = v
+v̇ = -g
+
+```julia
+julia> """A description of the function \n
+       ẋ = Vₓ \n  
+       ẏ = v \n
+       v̇ = -g \n
+       """
+       projectile_motion(u, p, t) = [p[1], u[3], p[2]]
+projectile_motion
+```
+To create a problem `ODEProblem` function is used.
+
+```julia
+julia> u0 = [0.0, 0.0, 5.0]
+3-element Array{Float64,1}:
+ 0.0
+ 0.0
+ 5.0
+
+julia> params = [1, -9.81]
+2-element Array{Float64,1}:
+  1.0
+ -9.81
+
+julia> tspan = (0.0, 2.0)
+(0.0, 2.0)
+
+julia> prob = ODEProblem(projectile_motion, u0, tspan, params)
+ODEProblem with uType Array{Int64,1} and tType Int64. In-place: false
+timespan: (0, 2)
+u0: [0, 0, 5]
+
+```
+
+To solve the problem, `solve` function is used. The function takes a problem,
+a method for solving the problem, and other parameters for this method.
+
+```julia
+julia> sol = solve(prob, Tsit5(), abstol=1e-8, reltol=1e-8)
+retcode: Success
+Interpolation: specialized 4th order "free" interpolation
+t: 5-element Array{Float64,1}:
+ 0.0                  
+ 0.0070693311194078125
+ 0.07490849421525578  
+ 0.5503901400837413   
+ 2.0                  
+u: 5-element Array{Array{Float64,1},1}:
+ [0.0, 0.0, 5.0]                 
+ [0.00706933, 0.0351015, 4.93065]
+ [0.0749085, 0.347019, 4.26515]  
+ [0.55039, 1.26608, -0.399327]   
+ [2.0, -9.62, -14.62]
+
+ ```
+ The solver uses adaptive steps and saves the results at time instances.
+ Let's change saving times now.
+
+ ```julia
+ julia> sol1 = solve(prob, Tsit5(), abstol=1e-8, reltol=1e-8, saveat=0.1)
+retcode: Success
+Interpolation: 1st order linear
+t: 21-element Array{Float64,1}:
+ 0.0
+ 0.1
+ 0.2
+ 0.3
+ 0.4
+ 0.5
+ ⋮  
+ 1.6
+ 1.7
+ 1.8
+ 1.9
+ 2.0
+u: 21-element Array{Array{Float64,1},1}:
+ [0.0, 0.0, 5.0]         
+ [0.1, 0.45095, 4.019]   
+ [0.2, 0.8038, 3.038]    
+ [0.3, 1.05855, 2.057]   
+ [0.4, 1.2152, 1.076]    
+ [0.5, 1.27375, 0.095]   
+ ⋮                       
+ [1.6, -4.5568, -10.696]
+ [1.7, -5.67545, -11.677]
+ [1.8, -6.8922, -12.658]
+ [1.9, -8.20705, -13.639]
+ [2.0, -9.62, -14.62]  
+
+```
+
+Let's see how they evolves
+
+```julia
+julia> plot(sol[1, :], sol[2, :], "r--", sol1[1, :], sol1[2, :], "b--")
+2-element Array{PyCall.PyObject,1}:
+ PyObject <matplotlib.lines.Line2D object at 0x7f7d163290f0>
+ PyObject <matplotlib.lines.Line2D object at 0x7f7d1629f358>
+
+julia> legend(("Adaptive Steps", L"Interval $\Delta$t = 0.1 sec"),loc=1)
+PyObject <matplotlib.legend.Legend object at 0x7f7d1634ce80>
+
+julia> grid(true)
+
+```
+![Alt text](./ProjectileMotion.svg)
