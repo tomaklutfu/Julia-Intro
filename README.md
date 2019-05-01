@@ -702,4 +702,20 @@ PyObject <matplotlib.legend.Legend object at 0x7f7d1634ce80>
 julia> grid(true)
 
 ```
-![Alt text](./ProjectileMotion.svg)
+![Projectile Motion](./ProjectileMotion.svg)
+
+Let's see difference between them.
+
+```julia
+julia> plot(sol1.t, norm.(sol.(0:0.1:2) .- sol1.(0:0.1:2)))
+1-element Array{PyCall.PyObject,1}:
+ PyObject <matplotlib.lines.Line2D object at 0x7f7d9f4c2828>
+
+julia> legend(("Solution Difference",), loc=1)
+PyObject <matplotlib.legend.Legend object at 0x7f7d9fd62a58>
+
+julia> grid(true)
+
+```
+
+![Solution Difference](./soldiff.svg)
