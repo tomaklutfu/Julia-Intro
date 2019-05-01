@@ -1,4 +1,4 @@
-# Julia Preview
+# A Quick Intro to Julia - METU ATLAS GROUP 2 May 2019
 ## Comments
 
 ```julia
@@ -496,9 +496,9 @@ julia> x
 
 ## Broadcasting and Mapping
 
-Operators and functions can be applied to arrays element-wise. For example,
-for scalar `+` operator, `.+` is the element-wise counterpart and for scalar
-`sin` function, `sin.` is.
+Operators and functions can be applied on arrays or array-like objects
+element-wise. For example, for scalar `+` operator, `.+` is the element-wise
+counterpart and for scalar `sin` function, `sin.` is.
 
 ```julia
 julia> 1+1
@@ -515,5 +515,85 @@ julia> (1:3) .+ [1, 5]'
  2  6
  3  7
  4  8
- 
+
+ julia> sin(π/2)
+1.0
+
+julia> a = range(0, π, step=π/16)
+0.0:0.19634954084936207:3.141592653589793
+
+julia> sin.(a)
+17-element Array{Float64,1}:
+ 0.0                   
+ 0.19509032201612825   
+ 0.3826834323650898    
+ 0.5555702330196022    
+ 0.7071067811865475    
+ 0.8314696123025452    
+ ⋮                     
+ 0.7071067811865476    
+ 0.5555702330196022    
+ 0.3826834323650899    
+ 0.1950903220161286    
+ 1.2246467991473532e-16
+
  ```
+## Modules and Packages
+
+There are some standard libraries bundled with julia. `LinearAlgebra`,
+`SparseArrrays`, and `Statistics` are examples of standard libraries. To put
+them in use, they should be imported by `import` or `using` syntax.
+
+```julia
+julia> dot(ones(5), ones(5)) # dot product is not available now
+ERROR: UndefVarError: dot not defined
+Stacktrace:
+ [1] top-level scope at none:0
+
+julia> import LinearAlgebra # import LinearAlgebra Module
+
+julia> dot(ones(5), ones(5)) # Still dot product is not available
+ERROR: UndefVarError: dot not defined
+Stacktrace:
+ [1] top-level scope at none:0
+
+julia> LinearAlgebra.dot(ones(5), ones(5)) # But can call with LinearAlgebra namespace
+5.0
+
+julia> using LinearAlgebra # Now the exported names from LinearAlgebra is available
+
+julia> dot(ones(5), ones(5))
+5.0
+
+```
+
+Other than standard libraries, The Julia Language can pull packages from GitHub
+repositories. For later usage, `DifferentialEquations.jl` and `PyPlot.jl`
+packages are shown to how to be installed.
+
+```julia
+julia>] #Press right bracket in REPL
+
+(v1.1) pkg> #Prompts this
+
+(v1.1) pkg> add DifferentialEquations PyPlot
+ Resolving package versions...
+ # Bunch of install directives
+
+(v1.1) pkg> # Press Backspace button to turn back to REPL
+
+julia> # Prompts this
+
+julia> using DifferentialEquations, PyPlot
+[ Info:  # Some Pre-compilation Statements
+]
+
+```
+
+## Ordinary Differential Equations
+
+Differential equations show rate of change of states. For example, projectile
+motion can be modeled as
+$\dot{x} = V_x$
+$\dot{y} = V_y$
+$\dot{V}_y = -g$
