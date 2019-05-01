@@ -1,4 +1,5 @@
-# A Quick Intro to Julia - METU ATLAS GROUP 2 May 2019
+# A Quick Intro to Julia - METU ATLAS GROUP
+Date: 2nd  May 2019
 ## Comments
 
 ```julia
@@ -719,3 +720,5 @@ julia> grid(true)
 ```
 
 ![Solution Difference](./soldiff.svg)
+
+Lutfullah Tomak, 2019
